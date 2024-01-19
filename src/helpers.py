@@ -3,17 +3,18 @@ from src.variables import bot, CHAT_ID
 
 
 def check_category_db(data, category_db):
-    category = data.feed.title
-    if category in category_db:
-        return 1
-    else:
+    category = data.feed.title if 'title' in data.feed and data.feed.title else False
+    if category and category in category_db:
+        return True
+    elif category and category not in category_db:
         category_db.append(category)
-        return 0
+        return False
+    return False
 
 
 def check_entries(data, links, items):
     new_entries = []
-    website = data.feed.link
+    website = data.feed.link if 'link' in data.feed and data.feed.link else None
     if website in links:
         for element in data.entries:
             if element.id not in links[website]:
